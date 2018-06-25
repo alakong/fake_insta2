@@ -93,3 +93,22 @@ $ rake db:migrate
 $ rails generate devise:views users
 ```
 
+1. [custom column 추가하기](https://github.com/plataformatec/devise#strong-parameters)
+
+   1. migration 파일에 원하는 column추가
+
+   2. `app/views/devise/registrations/new.html.erb` input 추가
+
+   3. `app/controllers/application_controller.rb`
+
+      ```ruby
+        before_action :configure_permitted_parameters, if: :devise_controller?
+      
+        protected
+      
+        def configure_permitted_parameters
+          devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+        end
+      ```
+
+      
