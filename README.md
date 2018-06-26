@@ -112,3 +112,17 @@ $ rails generate devise:views users
       ```
 
       
+
+```ruby
+Post.find(1)
+Post.first(3) # 앞에서부터 3개
+Post.last(3) # 뒤에서부터 3개
+Post.order(:title) # title column data기준으로 정렬
+Post.order(title: :desc) # z~a
+Post.order(title: :asc) # a~z
+Post.where("title=?", "Golduck") # title column에서 data가 Golduck인 것을 찾아줘요
+Post.where("title like ?", "%duck%") # title column에서 data에 duck이 들어간 것을 찾아줘요
+Post.where.not("조건")
+User.where("age > ? AND gender = ?", 25, "male") # 나이 25 초과, 남자
+```
+
