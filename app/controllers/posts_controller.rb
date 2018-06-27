@@ -2,7 +2,11 @@ class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: :index
   def index
-    @posts = Post.all
+    @posts = Post.order(created_at: :desc).page(params[:page]).per(5)
+    respond_to do |format|
+      format.html
+      format.json { render json: @posts }
+    end
   end
 
   def new
@@ -11,8 +15,20 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.new(post_params)
-    @post.save
-    redirect_to "/"
+    respond_to do |format|
+      if @post.save
+        # 저장이 되었을 경우에 실행
+        # flash[:notice] = "글 작성이 완료되었습니다."
+        # redirect_to '/'
+        format.html { redirect_to '/', notice: '글 작성완료!'}
+      else
+        # 저장이 실패했을 경우에(validation) 걸렸을 때 실행
+        # flash[:alert] = "글 작성이 실패했습니다."
+        # redirect_to new_post_path
+        format.html { render :new}
+        format.json { render json: @post.errors}
+      end
+    end
   end
 
   def show

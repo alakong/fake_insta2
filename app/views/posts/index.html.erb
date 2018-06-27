@@ -6,3 +6,6 @@
   <%= link_to '글보기', post, class: "btn btn-primary" %>
   <hr />
 <% end %>
+<div class="d-flex justify-content-center">
+  <%= paginate @posts %>
+</div>
