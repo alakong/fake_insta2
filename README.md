@@ -191,7 +191,7 @@ User.where("age > ? AND gender = ?", 25, "male") # 나이 25 초과, 남자
 3. 설치
 
    ```
-   $ rails generate 
+   $ rails generate simple_form:install --bootstrap
    ```
 
 4. Bootstrap 프로젝트에 적용
