@@ -13,14 +13,96 @@
 <% end %>
 <hr />
 
-<form action="/posts/<%= @post.id%>/comments" method="post">
+<form action="/posts/<%= @post.id%>/comments" method="post" data-remote=true>
   <input type="text" name="content" /><br />
   <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
   <input type="submit" />
 </form>
 <hr />
 
+<div id="comments">
 <% @comments.each do |comment| %>
+  <p>
   <%= comment.content %>
+  <%= link_to '댓글 삭제하기', destroy_comment_path(comment.id),remote:true, method: :delete, class:"delete_comment" %>
+  </p>
   <hr />
 <% end %>
+</div>
+
+<script>
+$('form').on('ajax:success',function(){
+  $('input[name="content"]').val('');
+})
+
+</script>
+
+
+<!-- <script>
+
+  $('input[type="submit"]').on('click',function(e){
+    e.preventDefault();
+    alert('start!');
+  $.ajax({
+
+    url: $('form').attr('action'),
+    type: 'POST',
+    data: {content: $('input[name="content"]').val(),
+          authenticity_token: $('[name="csrf-token"]').attr('content')},
+    dataType: 'script',
+    success: function(){
+      alert('success')
+      $('input[name="content"]').val('');
+    },
+    errot: function(){
+      alert('fail')
+    }
+
+  });
+
+  });
+$('.delete_comment').on('click',function(e){
+  e.preventDefault();
+  alert('start_delete');
+  $.ajax({
+    url: this.href,
+    type: "DELETE",
+    data: {content: $('input[name="content"]').val(),
+          authenticity_token: $('[name="csrf-token"]').attr('content')},
+    dataType: "script",
+    success: function(){
+      alert('complete');
+    },
+    error: function(){
+      alert('delete_error');
+    }
+  });
+});
+</script> -->
+
+<!-- <script>
+
+$('input[type="submit"]').on('click' , function(e){
+                                        var response =  confirm("정말 제출 하실건가용?")
+if(!response){
+  //response == false 면 실행
+  //e.preventDefault();
+  return false;
+}else{
+  //e.stopImmediatePropagation(); //동일한 element에 있는 다른 이벤트 발생을 막는다. 여기서는 10글자 이하여도 그냥 써지게만
+}
+});
+
+
+function checkContentLen(e){
+var content=$('input[name="content"]').val();
+if (content.length <10){
+  alert('10글자 이상 작성해 주세요');
+  return false;
+}else{
+  alert('참 잘했어요!');
+}
+}
+$('input[type="submit"]').on('click' , checkContentLen)
+
+</script> -->
